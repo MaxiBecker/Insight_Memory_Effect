@@ -16,6 +16,7 @@ all quantitative output for the above mentioned manuscript.
 
 2. Instructions for use
 - download all the files from the repository
+- unzip BeckerSommerCabeza2023_VOTC_Amy_HC_Insight_Univariate_Activation.zip
 - open file BeckerSommerCabeza_2023a_main.R  in RStudio
 - install relevant packages (load libraries: line 29-50; installation time: 5-10min)
 - change the working directory in line 77 to where to downloaded the data
