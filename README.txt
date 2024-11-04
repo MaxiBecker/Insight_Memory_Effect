@@ -34,7 +34,7 @@ all quantitative output for the above mentioned manuscript.
 			- insight memory effect (lines: 413-517)
 			- correlation insight experience anagrams / Mooney image identification (lines: 519-539)
 					
-	2) Univariate ROI analysis Amygdala & anterior/posterior hippocampus (line: 541-710)
+	2) Univariate ROI analysis Amygdala & anterior/posterior hippocampus (line: 541-816)
 	                - insight effect: single trial (standard space) (lines: 604-610)
 			- insight effect: parametric modulation (subject space) (lines: 613-669)
 			- exploratory: which dimension is driving univariate insight effects (lines: 671-680)
@@ -42,15 +42,15 @@ all quantitative output for the above mentioned manuscript.
 			- exploratory: which dimension is driving univariate insight memory effects in aHC (lines: 729-748)
 			- control analysis: univariate effects in VOTC-RC areas (lines: 782-816)
 					
-	3) multivariate RSA analyses (lines: 711 - 932) 
-			- Multivoxel Pattern Similarity - Insight (lines: 725-748)
-                        - Multivoxel Pattern Similarity - Insight Memory (lines: 750-792)
-			- RSA - AlexNet - Insight (lines: 793-827)
-                        - RSA - AlexNet - Insight Memory (lines: 828-862)
-			- RSA - Word2Vec- Insight (lines: 863-898)
-                        - RSA - Word2Vec- Insight Memory (lines: 899- 932)
+	3) multivariate RSA analyses (lines: 817 - 932) 
+			- Multivoxel Pattern Similarity - Insight (lines: 830-866)
+                        - Multivoxel Pattern Similarity - Insight Memory (lines: 868-921)
+			- RSA - AlexNet - Insight (lines: 923-967)
+                        - RSA - AlexNet - Insight Memory (lines: 969-1010)
+			- RSA - Word2Vec- Insight (lines: 1012-1048)
+                        - RSA - Word2Vec- Insight Memory (lines: 1059- 1088)
 					
-	4) Plotting all outputs (lines: 845-877)
+	4) Plotting all outputs (lines: 1104-1137)
 
 
 2b. Control: Object recognition experiment
@@ -69,7 +69,7 @@ all quantitative output for the above mentioned manuscript.
 2c. Control (behavioral): Mooney identification task + subsequent memory task
 - download all the files from the repository (keep folder structure as is)
 - open file BeckerSommerCabeza_2024_controlexp_behavior.R  in RStudio
-- change the working directory in line 27
+- change the working directory in line 80
 - run the code (pressing "source" or line by line pressing "run")
 - expected run time (normal desktop computer: ~30sec)
 
@@ -81,4 +81,4 @@ all quantitative output for the above mentioned manuscript.
 	5a) Accuracy effect (line 340)
 	5b) Solution time effect (line 348)
 	6) Insight Memory Advantage (categorical/continuous): (lines 357:365; 377:383)
-	7) Figure S7-A:D: (lines: 463:467)
+	8) Figure S7-A:D: (lines: 463:467
