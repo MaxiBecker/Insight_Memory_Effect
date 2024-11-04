@@ -2,7 +2,7 @@
 #### Code for Manuscript Becker, Sommer & Cabeza 2024 
 #### Neural Mechanisms of Creative Problem Solving: From Representational Change to Memory Formation
 #### (c) almaxi@gmail.com
-#### last update: 11/August/2024
+#### last update: 04/November/2024
 
     ## Insight Dimensions
     ## Auf einer Skala von 1 - 4:, (sehr unsicher) 1 <--  --> 4 (sehr sicher)
