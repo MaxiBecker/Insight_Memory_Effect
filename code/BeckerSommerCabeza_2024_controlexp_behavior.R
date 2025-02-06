@@ -24,7 +24,7 @@ library(ggplot2)
 #library(scales)
 
 ###########-
-setwd("C:/Users/Maxi/Google Drive/studies/Maxi/IN_REVISION/PVI/GitHub_4_publication/REVISION1/data/control_experiments")
+setwd("I:/Meine Ablage/uni/_studies/IN_REVISION/PVI/GitHub_4_publication/REVISION1/data/control_experiments")
 expdata_all<- read.table("BeckerSommerCabeza_2024_controlexp.csv", sep = ";", dec = ".", header=T, na.strings=c("", " " , "NA", "NAN" )) 
 memdata    <- read.table("BeckerSommerCabeza_2024_controlexp_SME.csv", sep = ";", dec = ".", header=T, na.strings=c("", " " , "NA", "NAN" )) 
 ###########-
@@ -349,7 +349,7 @@ for(i in 1:nrow(expdata)){
   expdata2b = expdata[expdata$RT>=1.5 | is.na(expdata$RT) & expdata$cor2 , ]
   M0_RT <- lmer(log(RT) ~ blocknum+             (1|ID) + (1|stimnumber),data= expdata3[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
   M1_RT <- lmer(log(RT) ~ blocknum+insight_sum +(1|ID) + (1|stimnumber),data= expdata3[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
-
+  
   anova(M0_RT, M1_RT)
   tab_model(M1_RT, show.std  = T)
 
@@ -365,34 +365,64 @@ for(i in 1:nrow(expdata)){
   tab_model(M1_IME_cat)
   
 #### Figure S7-C ######
-  IME_ggpredict =ggpredict(M1_IME_cat , c(  'insight_mediansplit_ord'))
-  IME_ggpredict_plot = ggplot(IME_ggpredict, aes(x= x, y = predicted , fill=  x)) +
-    geom_bar(stat="identity",  position=position_dodge(),show.legend = F) + #, color = "black"
-    geom_errorbar(aes(ymin=conf.low , ymax=conf.high), width=.2,size = .95,position=position_dodge(.9)) +
-    theme_classic() +labs(title = "5 days after experiment",x = "Insight (categorical)",y = "Mooney solution recall (5 days later)")+
-    scale_y_continuous(limits = c(0, 90))+ scale_y_continuous(labels = percent)+
-    scale_fill_manual(breaks = c('not solved','LO-I','HI-I'),values=c('#babcba', "#f5d6e2", "#733e54")) 
+        data_new1 = expdata3[!is.na(expdata3$insight_mediansplit_ord) & !is.na(expdata3$Correct_Recall),]
+        IME_ggpredict <- ggpredict(M1_IME_cat, terms = "insight_mediansplit_ord")
+        data_new1 <- data_new1 %>% mutate(predicted = predict(M1_IME_cat, type = "response") * 100)
+        
+        # Create the plot:
+        IME_ggpredict_plot=ggplot(data_new1, aes(x = insight_mediansplit_ord, y = predicted, fill = insight_mediansplit_ord)) +
+          # Violin plot for the raw data distribution
+          geom_violin(trim = FALSE, alpha = 0.6, width = 1.8,adjust = 0.5) +
+          theme_classic() +
+          labs(title = "5 days after experiment",
+               x = "Insight (categorical)",
+               y = "Mooney solution recall in %") +
+          scale_y_continuous(limits = c(0, 100)) +
+          theme(legend.position = "none") +      
+          scale_fill_manual(breaks = c('not solved','LO-I','HI-I'),
+                            values = c('#babcba', "#f5d6e2", "#733e54"))+
+          # Estimated marginal means (EMMs) inside the violin plot
+          geom_point(data = IME_ggpredict, 
+                     aes(x = x, y = predicted * 100), inherit.aes = FALSE,
+                     color = "black", size = 3, shape = 16) +  # Black dots for EMMs
+          # Overlay the model's error bars (from ggpredict) as a separate data layer
+          geom_errorbar(data = IME_ggpredict,
+                        aes(x = x, ymin = conf.low * 100, ymax = conf.high * 100), inherit.aes = FALSE,
+                        width = 0.2, size = 0.95, position = position_dodge(0.9))
   
   ## continuous variable controlled for RT
   expdata3 = expdata[expdata$RT>=1.5 & expdata$cor2 ==1 & !is.na(expdata$insight_sum), ]
-  M0_IME <- glmer(Correct_Recall ~ blocknum+                      (1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
-  M1_IME <- glmer(Correct_Recall ~ blocknum+scale(RT)+           +(1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
-  M2_IME <- glmer(Correct_Recall ~ blocknum+scale(RT)+insight_sum+(1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
+  M0_IME_RT <- glmer(Correct_Recall ~ blocknum+                      (1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
+  M1_IME_RT <- glmer(Correct_Recall ~ blocknum+scale(RT)+           +(1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
+  M2_IME_RT <- glmer(Correct_Recall ~ blocknum+scale(RT)+insight_sum+(1|ID) + (1|stimnumber),data= expdata3,family = binomial(link ="logit"), na.action  = na.omit)
 
-  anova(M0_IME, M1_IME,M2_IME)
-  tab_model(M2_IME)
+  anova(M0_IME_RT, M1_IME_RT,M2_IME_RT)
+  tab_model(M2_IME_RT)
 
 #### Figure S7-D: (with RT) ######
-  IME_RT_ggplot = ggpredict(M2_IME , c('insight_sum'))   #%>%plot(show.data=T)+ggplot2::theme_classic()
-  IME_RT_finalPlot= ggplot(IME_RT_ggplot, aes(x= x, y = predicted, fill = predicted)) + #
-    scale_fill_gradient(low="#f5d6e2",high="#733e54")+
-    geom_bar(stat="identity",  position=position_dodge(),show.legend = T) + #, color = "black"
-    geom_errorbar(aes(ymin=conf.low , ymax=conf.high ), width=.2, size = 1.1, position=position_dodge(.9))+
-    theme_classic() +labs(title = "5 days after experiment", x = "Insight (continuous)", y = "Mooney solution recall (5 days later)")
-
-    IME_RT_finalPlot= IME_RT_finalPlot+ scale_y_continuous(labels = percent)+ theme(legend.position = "none")
-  
-
+    data_new1 = expdata3[!is.na(expdata3$insight_sum) & !is.na(expdata3$Correct_Recall),]
+    IME_RT_ggplot = ggpredict(M2_IME_RT , c('insight_sum'))  
+    data_new1 <- data_new1 %>%mutate(predicted = predict(M2_IME_RT, newdata = data_new1, type = "response") * 100)
+    data_new1$insight_sum_fac = as.factor(data_new1$insight_sum)
+    n_levels <- length(unique(data_new1$insight_sum_fac))
+    gradient_palette <- colorRampPalette(c("#f5d6e2", "#733e54"))(n_levels)
+    IME_RT_finalPlot=ggplot(data_new1, aes(x = insight_sum, y = predicted, fill = insight_sum_fac)) +
+      geom_violin(trim = FALSE, alpha = 0.6, width = 1.8, adjust = 0.5) +
+      theme_classic() +
+      labs(title = "5 days after fMRI",
+           x = "Insight (continuous)",
+           y = "Mooney solution recall in %") +
+      #scale_y_continuous(limits = c(0, 115)) +
+      scale_x_continuous(breaks = 3:12) +   # Set x-axis ticks to 3, 4, 5, ... 12
+      scale_fill_manual(values = gradient_palette) +
+      theme(legend.position = "none") +      # Remove the legend for insight_sum_fac
+      geom_point(data = IME_RT_ggplot, 
+                 aes(x = x, y = predicted * 100), inherit.aes = FALSE,
+                 color = "black", size = 3, shape = 16) +  # Black dots for EMMs
+      geom_errorbar(data = IME_RT_ggplot,
+                    aes(x = x, ymin = conf.low * 100, ymax = conf.high * 100), inherit.aes = FALSE,
+                    width = 0.2, size = 0.95, position = position_dodge(0.9)) 
+    
   ###############################################################################################################-
   
 #### Figure S7-A ####
@@ -415,10 +445,10 @@ for(i in 1:nrow(expdata)){
   
   p <- ggplot(descriptives_long, aes(condition_ord,amount,fill = condition_ord))
   AHA_amount_plot <- p+ geom_bar( position = 'dodge', stat = 'summary', fun.y = 'mean') + #, color = "black"
-    geom_errorbar(stat = 'summary', position = 'dodge', width = 0.2, size = .95) +
     geom_jitter(position = position_jitter(width = 0.1, height = 0.1), color = "#949393")+ #+ shape = 21, 
     labs(title = "during control experiment",x = "Insight (categorical)",y = "overall amount in %")+theme_classic()+scale_y_continuous(limits = c(0, 70))+
-    scale_fill_manual(breaks = c('not solved','LO-I', 'HI-I'),values=c("#d0cccc", "#f5d6e2", "#733e54"))
+    scale_fill_manual(breaks = c('not solved','LO-I', 'HI-I'),values=c("#d0cccc", "#f5d6e2", "#733e54"))+
+    geom_errorbar(stat = 'summary', position = 'dodge', width = 0.2, size = .95) 
   
 
   ############################################################################################################### -
@@ -449,12 +479,13 @@ for(i in 1:nrow(expdata)){
   
   p1 <- ggplot(data = behave_data_conditioncount_long2,mapping = aes(x = condition, y = value, fill = condition))
   p1a <- p1+ geom_bar( position = 'dodge', stat = 'summary', fun.y = "mean") + 
-    geom_errorbar(stat = 'summary', position = 'dodge',  width = 0.2, size = .95) + #,
     geom_jitter(position = position_jitter(width = 0.1, height = 0.1), color = "#949393")+
     scale_fill_manual(breaks = c('Recog_HII', 'Recog_LOI','Rec_s_HII','Rec_s_LOI','Recall_HII','Fg_HII','Recall_LOI','Fg_LOI'),
                       values=c("#733e54","#f5d6e2" , "#733e54","#f5d6e2","#733e54","#d0cccc","#f5d6e2","#d0cccc" ))+ 
-    labs(x = "conditions",y = "absolute amount")+theme_classic() +
-    scale_y_continuous(breaks = round(seq(min(behave_data_conditioncount_long1$value), max(behave_data_conditioncount_long1$value), by = 5),1))
+    labs(title = "5 days after experiment", x = "conditions",y = "absolute amount") +theme_classic() +
+    scale_y_continuous(breaks = round(seq(min(behave_data_conditioncount_long1$value), max(behave_data_conditioncount_long1$value), by = 5),1))+
+    theme(legend.position = "none")+ geom_errorbar(stat = 'summary', position = 'dodge',  width = 0.2, size = .95) 
+
 
   
   
