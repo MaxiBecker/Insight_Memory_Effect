@@ -1,5 +1,5 @@
 
-Data for manuscript: Neural Mechanisms of Creative Problem Solving - From Representational Change to Memory Formation
+Data for manuscript: Insight Predicts Stronger Functional Connectivity and Subsequent Memory via Cortical Representational Change and Hippocampal Activity
 Authors: Becker, Sommer, Cabeza (2025)
 
 Abstract:
