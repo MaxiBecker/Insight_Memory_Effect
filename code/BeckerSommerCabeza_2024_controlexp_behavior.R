@@ -1,27 +1,22 @@
-#### Code for Manuscript Becker, Sommer & Cabeza 2023 
+#### Code for Manuscript Becker, Sommer & Cabeza 2025
 #### Neural Mechanisms of Creative Problem Solving: From Representational Change to Memory Formation
 #### Control analysis Subsequent Memory  
 #### (c) almaxi@gmail.com
-#### last update: 22/Jan/2024
+#### last update: 18/Feb/2025
 
 rm(list = ls())
 
 ## load libraries ##############################################################
   library(lme4)
   library(lmerTest)
- library(sjPlot)
- library(sjmisc)
-#library(knitr)
-#library(magrittr)
- library(sjlabelled)      
- library(sjstats) 
+  library(sjPlot)
+  library(sjmisc)
+  library(sjlabelled)      
+  library(sjstats) 
   library(ggeffects)
-#library(performance)
   library(tidyverse)
-library(ggplot2)
-#library(dplyr)
-#library(ggpubr)
-#library(scales)
+  library(ggplot2)
+
 
 ###########-
 setwd("I:/Meine Ablage/uni/_studies/IN_REVISION/PVI/GitHub_4_publication/REVISION1/data/control_experiments")
@@ -265,7 +260,7 @@ for(i in 1:nrow(expdata)){
       expdata$forget_Recall_anteilig_LOI1 = NA
       expdata[ expdata$cor2 == 1 & !is.na(expdata$cor2)  & expdata$Correct_Recall == 0 & !is.na(expdata$Correct_Recall) & expdata$insight_mediansplit == "LO-I",]$forget_Recall_anteilig_LOI1 = 1
       
-##### Verhaltensparameter ######
+##### behavioral parameters ######
       
   behave_data1 = expdata[expdata$RT>=1.5 | is.na(expdata$RT),] %>% group_by(ID) %>% summarise_all(funs(mean), na.rm =T)   #& behave_data$cor2==1 
   
@@ -324,14 +319,14 @@ for(i in 1:nrow(expdata)){
       
   ######-
       
-  # response time of all old images
-  #mem_data2 = memdata %>% group_by(subject, trialcode) %>% summarise(RT = mean(latency/1000, na.rm =T) )  #& behave_data$cor2==1 
-  #median(mem_data2[mem_data2$trialcode == "visAHA",]$RT)
-  #sd(mem_data2[mem_data2$trialcode == "visAHA",]$RT)
-  
-  # response time of all new images
-  #(mem_data2[mem_data2$trialcode == "visCATCH",]$RT)
-  #(mem_data2[mem_data2$trialcode == "visCATCH",]$RT) #119 & 123 
+
+      
+      
+      
+      
+      
+      
+      
   
 #### Inferential statistics  #######
   
@@ -347,8 +342,8 @@ for(i in 1:nrow(expdata)){
 
   # solution time effect
   expdata2b = expdata[expdata$RT>=1.5 | is.na(expdata$RT) & expdata$cor2 , ]
-  M0_RT <- lmer(log(RT) ~ blocknum+             (1|ID) + (1|stimnumber),data= expdata3[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
-  M1_RT <- lmer(log(RT) ~ blocknum+insight_sum +(1|ID) + (1|stimnumber),data= expdata3[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
+  M0_RT <- lmer(log(RT) ~ blocknum+             (1|ID) + (1|stimnumber),data= expdata2b[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
+  M1_RT <- lmer(log(RT) ~ blocknum+insight_sum +(1|ID) + (1|stimnumber),data= expdata2b[!is.na(expdata2b$insight_sum) & expdata2$cor2 == 1,], na.action  = na.omit)
   
   anova(M0_RT, M1_RT)
   tab_model(M1_RT, show.std  = T)
@@ -485,10 +480,6 @@ for(i in 1:nrow(expdata)){
     labs(title = "5 days after experiment", x = "conditions",y = "absolute amount") +theme_classic() +
     scale_y_continuous(breaks = round(seq(min(behave_data_conditioncount_long1$value), max(behave_data_conditioncount_long1$value), by = 5),1))+
     theme(legend.position = "none")+ geom_errorbar(stat = 'summary', position = 'dodge',  width = 0.2, size = .95) 
-
-
-  
-  
 
   
 ### Figure S7: plot all behavioral data together  #####

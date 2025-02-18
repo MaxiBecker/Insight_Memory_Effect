@@ -624,7 +624,7 @@ setwd('I:/Meine Ablage/uni/_studies/IN_REVISION/PVI/GitHub_4_publication/REVISIO
                                      breaks = quantile(Activity_data$insight_sum, probs = c(0, 1/3, .5, 1), na.rm = TRUE), 
                                      include.lowest = TRUE, 
                                      labels = c("Low", "Medium", "High"))
-    Amy_HC_ggplot = as.data.frame(ggpredict(Activity_M3 , c('insight_sum', 'ROI_bilat')))
+    Amy_HC_ggplot = as.data.frame(ggpredict(Activity_M3 , c('insight_sum', 'ROI_bilat_ord')))
     Amy_HC_ggplot$ROI_bilat_ord = as.factor(Amy_HC_ggplot$group)
     Amy_HC_ggplot$insight_bin=  Amy_HC_ggplot$x
     Amy_HC_ggplot$insight_bin <- cut(Amy_HC_ggplot$x, 
@@ -926,14 +926,13 @@ setwd('I:/Meine Ablage/uni/_studies/IN_REVISION/PVI/GitHub_4_publication/REVISIO
             strip.text   = element_text(size = 14), 
             legend.position = "none") + scale_x_continuous(breaks = 3:12)    # Set x-axis ticks to 3, 4, 5, ... 12
     
-    # CONTROL ANALYSIS: checking for time-on-task effects on BOLD signal of VOTC-RC areas
+    # checking for time-on-task effects on BOLD signal of VOTC-RC areas
     Activity_VS_V7 <- lmer(Beta_Buttonpress ~ xsessionblock +ROI_bilat+xRT+(1|ID) + (1|Item),data= Activity_data, na.action  = na.omit)
     Activity_VS_V8 <- lmer(Beta_Buttonpress ~ xsessionblock +ROI_bilat*xRT+(1|ID) + (1|Item),data= Activity_data, na.action  = na.omit)
     plot(check_collinearity(Activity_VS_V8))
     anova( Activity_VS_V7, Activity_VS_V8)
     tab_model(Activity_VS_V8, show.std =T)
     ggpredict(Activity_VS_V8 , c('ROI_bilat','xRT'))%>%plot()+ggplot2::theme_classic()
-    
     library("modelbased")
     estimate_slopes(Activity_VS_V8, trend = "xRT", at = "ROI_bilat",seed = 123)
 
@@ -1037,6 +1036,10 @@ newdata = PPSS[
   permERS_M2_IME = permlmer(ERS_M1_IME,ERS_M2_IME, plot = T, seed = 123)
   permERS_M3_IME = permlmer(ERS_M2_IME,ERS_M3_IME, plot = T, seed = 123)
   #permERS_M2_IMEa = permmodels(ERS_M2_IME, type = 2, seed = 123)
+  
+  #extract_effect_size <- function(model){ fixef(model)["insight:SME_solve_fac"]}
+  #boot_results <- bootMer(model, extract_effect_size, nsim=10, type="ordinary")
+  #boot.ci(boot_results, type = "perc")
   
   #### Fig.6-A ####  -> note use with this variable: ERS_PrePost_R_delta!!! (inverse)
         ERSdata$predicted <- predict(ERS_M3_IME, newdata = ERSdata)
