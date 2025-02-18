@@ -80,8 +80,10 @@ all quantitative output for the above mentioned manuscript.
 	1) Demographics lines 33ff
 	2) Accuracy adjustment (to approximate correctly counted but wrong examples in fMRI sample line 107
 	3) Behavioral (performance) data: (lines 268:324)
-	4) False Alarm Rate (line 189)
-	5a) Accuracy effect (line 340)
-	5b) Solution time effect (line 348)
-	6) Insight Memory Advantage (categorical/continuous): (lines 357:365; 377:383)
-	8) Figure S7-A:D: (lines: 463:467
+	4) False Alarm Rate (line 184)
+	5a) Accuracy effect (line 335)
+	5b) Solution time effect (line 343)
+	6) Insight Memory Advantage (categorical/continuous): (lines 352:395; 388:395)
+	7a) Figure S7-A (lines 423 - 446)
+	7b) Figure S7-B: (lines 450 - 483)
+	8) Figure S7-A:D: (lines: 485:490
