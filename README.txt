@@ -53,7 +53,7 @@ all quantitative output for the above mentioned manuscript.
 
 	4) plotting functional connectivity figure (lines: 1384 - 1418)
 					
-	4) Plotting all outputs (lines: 1420-1448)
+	5) Plotting all outputs (lines: 1420-1448)
 
 
 2b. Control: Object recognition experiment
@@ -79,7 +79,7 @@ all quantitative output for the above mentioned manuscript.
 ->  Expected output
 	1) Demographics lines 33ff
 	2) Accuracy adjustment (to approximate correctly counted but wrong examples in fMRI sample line 107
-	3) Behavioral (performance) data: (lines 268:324)
+	3) Behavioral (performance) data: (lines 263:320)
 	4) False Alarm Rate (line 184)
 	5a) Accuracy effect (line 335)
 	5b) Solution time effect (line 343)
